@@ -74,6 +74,6 @@ The PyQt5 GUI will launch, where you can select multiple Excel files and begin t
 3. The GUI and core data manipulation logic is housed in `app.py`.
 4. To process your Excel files, simply run the application `python app.py`, select your files using the GUI, and click the "Merge Files" button to merge and transform the data.
 
-### Show your support
+## Show your support
 
 Give a ⭐ if you like this project!
