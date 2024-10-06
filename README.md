@@ -1,5 +1,5 @@
 <h2 align="center">
-  XLSX Assembler
+  XLSX Assembler – ETL Tool for Merging Excel Data
 </h2>
 <div align="center">
   <img alt="Demo" src="./assets/Demo.png" />
@@ -70,8 +70,8 @@ The PyQt5 GUI will launch, where you can select multiple Excel files and begin t
 ## Usage Instructions
 
 1. Open the project folder and navigate to `/src/`.
-2. The core data processing logic can be found in the `excel_operations.py` file.
-3. The GUI logic is housed in `app.py`. You can customize the interface or add new features as needed.
+2. The supplimental data processing logic can be found in the `excel_operations.py` file.
+3. The GUI and core data manipulation logic is housed in `app.py`.
 4. To process your Excel files, simply run the application `python app.py`, select your files using the GUI, and click the "Merge Files" button to merge and transform the data.
 
 ### Show your support
