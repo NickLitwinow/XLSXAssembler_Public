@@ -2,7 +2,7 @@
   XLSX Assembler
 </h2>
 <div align="center">
-  <img alt="Demo" src="./Images/readme-img1.png" />
+  <img alt="Demo" src="./assets/Demo.png" />
 </div>
 
 <br/>
@@ -19,8 +19,6 @@
 
 ## Built With
 
-My personal portfolio <a href="https://soumyajit.vercel.app/" target="_blank">soumyajit.tech</a> which features some of my github projects as well as my resume and technical skills.<br/>
-
 This project was built using these technologies.
 
 - Python
@@ -32,31 +30,46 @@ This project was built using these technologies.
 
 ## Features
 
-**📖 Multi-Page Layout**
+**🚀 Efficient ETL Process**
+Automates the extraction, transformation, and loading (ETL) of data from multiple Excel files.
+(Only specific excel structure)
 
-**🎨 Styled with React-Bootstrap and Css with easy to customize colors**
+**📊 Advanced Data Processing**
+Leverages the power of Pandas and Openpyxl for fast and accurate data reading, processing, and styling.
 
-**📱 Fully Responsive**
+**💻 Intuitive GUI with PyQt5**
+Includes a user-friendly graphical interface for selecting files and tracking real-time progress.
+
+**⚡ Performance Optimization**
+Optimized for reduced system load and faster data processing, ensuring efficient handling of large datasets.
 
 ## Getting Started
 
-Clone down this repository. You will need `node.js` and `git` installed globally on your machine.
+Prerequisites:
+- `Python` installed globally on your machine
+- `pip` for package installation
 
 ## 🛠 Installation and Setup Instructions
 
-1. Installation: `npm install`
+1. Clone the repository:
+`git clone https://github.com/NickLitwinow/XLSXAssembler_Public.git`
 
-2. In the project directory, you can run: `npm start`
+2. Install the necessary dependencies:
+`pip install -r requirements.txt`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-The page will reload if you make edits.
+3. Run the ETL tool:
+`python app.py`
+
+The PyQt5 GUI will launch, where you can select multiple Excel files and begin the ETL process.
+*Runs the app in the development mode.*
 
 ## Usage Instructions
 
-Open the project folder and Navigate to `/src/components/`. <br/>
-You will find all the components used and you can edit your information accordingly.
+1. Open the project folder and navigate to `/src/`.
+2. The core data processing logic can be found in the `excel_operations.py` file.
+3. The GUI logic is housed in `app.py`. You can customize the interface or add new features as needed.
+4. To process your Excel files, simply run the application `python app.py`, select your files using the GUI, and click the "Merge Files" button to merge and transform the data.
 
 ### Show your support
 
-Give a ⭐ if you like this website!
+Give a ⭐ if you like this project!
