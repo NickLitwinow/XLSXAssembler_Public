@@ -31,16 +31,20 @@ This project was built using these technologies.
 ## Features
 
 **🚀 Efficient ETL Process**
-Automates the extraction, transformation, and loading (ETL) of data from multiple Excel files.
+
+Automates the extraction, transformation, and loading (ETL) of data from multiple Excel files.\
 (Only specific excel structure)
 
 **📊 Advanced Data Processing**
+
 Leverages the power of Pandas and Openpyxl for fast and accurate data reading, processing, and styling.
 
 **💻 Intuitive GUI with PyQt5**
+
 Includes a user-friendly graphical interface for selecting files and tracking real-time progress.
 
 **⚡ Performance Optimization**
+
 Optimized for reduced system load and faster data processing, ensuring efficient handling of large datasets.
 
 ## Getting Started
