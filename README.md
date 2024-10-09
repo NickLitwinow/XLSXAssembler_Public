@@ -61,15 +61,15 @@ Prerequisites:
 
 2. Navigate into the `src` directory `cd src/`
 
-4. Run the ETL client:
+4. (Terminal 1) Run the ETL client:
 `python app.py`
 
-5. Build the Docker image:
+5. (Terminal 2) Build the Docker image:
 `docker build . --tag extending_airflow:latest`
 
-6. Run `docker-compose up -d` command to start docker services.
+6. (Terminal 2) Run `docker-compose up -d` command to start docker services.
    
-8. (Optional) Run `docker-compose down -v` command to end docker services
+8. (Terminal 2) (Optional) Run `docker-compose down -v` command to end docker services
 
 The PyQt5 GUI will launch, where you can select multiple Excel files and begin the ETL process.
 *Runs the app in the development mode.*
