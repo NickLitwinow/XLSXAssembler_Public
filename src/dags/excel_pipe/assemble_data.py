@@ -565,7 +565,7 @@ def assemble_data(all_sheets_data):
         # Дополнительно: удаление строк, где все значения пусты
         df.dropna(how='all', inplace=True)
 
-    dataframes_base = [reglamenty, cody, skt, intergracia_oborudovaniya, sistemy_monitoringa, standarty, bi_sistemy,
+    dataframes_base = [reglamenty, kommunikazii, cody, skt, intergracia_oborudovaniya, sistemy_monitoringa, standarty, bi_sistemy,
                        ORD, kd, mzk, kadry_1, kadry_2, bim, ib]
 
     for df in dataframes_base:

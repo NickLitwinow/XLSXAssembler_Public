@@ -10,7 +10,7 @@ def insert_excel_data(dfs, output_file):
     # wb = load_workbook(file_path)
 
     # Использовать при запуске кода
-    wb = load_workbook('./DEnew.xlsx')
+    wb = load_workbook('/opt/airflow/pipe/DEnew.xlsx')
 
     def insert_dataframe_to_excel(df, sheet_name, start, limit):
 

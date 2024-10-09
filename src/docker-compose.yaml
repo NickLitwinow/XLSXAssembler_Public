@@ -84,23 +84,23 @@ x-airflow-common:
       condition: service_healthy
 
 services:
-  zookeeper:
-    image: wurstmeister/zookeeper
-    container_name: zookeeper
-    platform: linux/amd64
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_volume_data:/data
     ports:
-      - "2181:2181"
+      - 6379:6379
 
-  kafka:
-    image: wurstmeister/kafka
-    container_name: kafka
-    platform: linux/amd64
+  redis_insight:
+    image: redislabs/redisinsight:1.14.0
+    container_name: redis_insight
+    restart: always
     ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_MESSAGE_MAX_BYTES: 1000000000
+      - 8001:8001
+    volumes:
+      - redis_insight_volume_data:/db
 
   postgres:
     image: postgres:13
@@ -248,3 +248,6 @@ services:
 
 volumes:
   postgres-db-volume:
+  redis_volume_data:
+  redis_insight_volume_data:
+  assets_volume_data:
