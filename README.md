@@ -64,7 +64,7 @@ Prerequisites:
 4. (Terminal 1) Run the ETL client:
 `python app.py`
 
-5. (Terminal 2) Build the Docker image:
+5. (Terminal 2) Build the Docker image (`sudo` may require):
 `docker build . --tag extending_airflow:latest`
 
 6. (Terminal 2) Run `docker-compose up -d` command to start docker services.
@@ -82,9 +82,11 @@ The PyQt5 GUI will launch, where you can select multiple Excel files and begin t
    
 3. Click `Merge Files` to name the output file and choose it's destination. The ETL process will start afterwards.
    
-4. To view the Airflow Dag process, open `http://localhost:8080/home` with login: `airflow` and password: `airflow`.
+4. To view the Airflow Dag process:
+- Open `http://localhost:8080/home` in your browser
+- Enter Login: `airflow` and Password: `airflow`.
    
-5. To view the Radis database:
+6. To view the Radis database:
 - Open `http://localhost:8001/`
 - Accept "EULA and Privacy Settings"
 - Click `I already have a database`
