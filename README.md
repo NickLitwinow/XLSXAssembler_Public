@@ -69,7 +69,7 @@ Prerequisites:
 
 6. (Terminal 2) Run `docker-compose up -d` command to start docker services.
    
-8. (Terminal 2) (Optional) Run `docker-compose down -v` command to end docker services
+8. (Terminal 2) (Optional) Run `docker-compose down -v` command to end docker services.
 
 The PyQt5 GUI will launch, where you can select multiple Excel files and begin the ETL process.
 *Runs the app in the development mode.*
@@ -83,16 +83,17 @@ The PyQt5 GUI will launch, where you can select multiple Excel files and begin t
 3. Click `Merge Files` to name the output file and choose it's destination. The ETL process will start afterwards.
    
 4. To view the Airflow Dag process:
-- Open `http://localhost:8080/home` in your browser
+- Open `http://localhost:8080/home` in your browser.
 - Enter Login: `airflow` and Password: `airflow`.
+- (Info) If you just ran the `docker-compose up -d` it may take some time for airflow to load.
    
 6. To view the Radis database:
-- Open `http://localhost:8001/`
+- Open `http://localhost:8001/` in your browser.
 - Accept "EULA and Privacy Settings"
 - Click `I already have a database`
 - Click `Connect to a Radis Database` with Host: `redis`, Port: `6379`, Name: `redis-local`
 - Click `ADD REDIS DATABASE`
-- Select the `redis-local` database
+- Select the `redis-local` database.
  
 ### Show your support
 
