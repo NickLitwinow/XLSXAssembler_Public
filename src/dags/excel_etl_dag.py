@@ -3,9 +3,9 @@ from datetime import datetime
 # Imports Airflow decorators to define DAGs and tasks.
 from airflow.decorators import dag, task
 # Import custom ETL functions
-from excel_pipe.read_data import read_data
-from excel_pipe.assemble_data import assemble_data
-from excel_pipe.insert_excel_data import insert_excel_data
+from excel_pipe.extract_data import read_data
+from excel_pipe.transform_data import assemble_data
+from excel_pipe.load_data import insert_excel_data
 # Imports the pickle module for data serialization (converting data structures to byte streams).
 import pickle
 # Imports the redis module for interacting with the Redis in-memory data store.
@@ -63,9 +63,9 @@ def combine_excel_sheets(file_paths, output_file):
     """
 
     @task()
-    def r_data(file_paths, output_file):
+    def extract_data(file_paths, output_file):
         """
-        def r_data(file_paths, output_file): Reads data from the provided Excel files using the read_data function.
+        def extract_data(file_paths, output_file): Reads data from the provided Excel files using the read_data function.
         - all_sheets_data = read_data(file_paths, output_file): Calls the custom read_data function to retrieve data from the files.
         - serialized_data = pickle.dumps(all_sheets_data): Serializes the retrieved data using pickle.dumps.
         - redis_set(msg, serialized_data): Stores the serialized data in Redis using the redis_set function.
@@ -76,16 +76,16 @@ def combine_excel_sheets(file_paths, output_file):
         serialized_data = pickle.dumps(all_sheets_data)
 
         print('Set data to Redis')
-        msg = 'r_data ' + datetime.strftime(datetime.now(), '%m/%d/%Y %H:%M:%S')
+        msg = 'extract_data ' + datetime.strftime(datetime.now(), '%m/%d/%Y %H:%M:%S')
         redis_set(msg, serialized_data)
         print('Set completed')
 
         return msg
 
     @task()
-    def a_data(msg):
+    def transform_data(msg):
         """
-        def a_data(msg): Assembles data from the combined source.
+        def transform_data(msg): Assembles data from the combined source.
         all_sheets_data = pickle.loads(redis_get(msg)): Deserializes the data retrieved from Redis using pickle.loads.
         serialized_data = pickle.dumps(assemble_data(all_sheets_data)): Serializes the assembled data.
         redis_set(msg, serialized_data): Stores the serialized assembled data in Redis.
@@ -99,16 +99,16 @@ def combine_excel_sheets(file_paths, output_file):
         serialized_data = pickle.dumps(assemble_data(all_sheets_data))
 
         print('Sending data to Redis')
-        msg = 'a_data ' + datetime.strftime(datetime.now(), '%m/%d/%Y %H:%M:%S')
+        msg = 'transform_data ' + datetime.strftime(datetime.now(), '%m/%d/%Y %H:%M:%S')
         redis_set(msg, serialized_data)
         print('Sent data to Redis')
 
         return msg
 
     @task()
-    def i_data(msg, output_file):
+    def load_data(msg, output_file):
         """
-        def i_data(msg, output_file): Inserts the processed data into the output Excel file.
+        def load_data(msg, output_file): Inserts the processed data into the output Excel file.
         dfs = pickle.loads(redis_get(msg)): Deserializes the data retrieved from Redis using pickle.loads.
         insert_excel_data(dfs, output_file): Runs the assembled data processing function insert_excel_data function.
         """
@@ -120,9 +120,9 @@ def combine_excel_sheets(file_paths, output_file):
         insert_excel_data(dfs, output_file)
 
     # Sequence of task execution
-    r_msg = r_data(file_paths=file_paths, output_file=output_file)
-    a_msg = a_data(r_msg)
-    i_data(a_msg, output_file=output_file)
+    msg = extract_data(file_paths=file_paths, output_file=output_file)
+    msg = transform_data(msg)
+    load_data(msg, output_file=output_file)
 
 
 # Launches DAG with parameters of selected XLSX files and output file path

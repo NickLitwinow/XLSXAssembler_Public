@@ -2,33 +2,78 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 
 def insert_excel_data(dfs, output_file):
+    """
+        Inserts data from multiple pandas DataFrames into an Excel workbook, handling
+        specific sheet names and applying formatting if necessary.
+
+        Args:
+            dfs (list): A list of two lists, where the first contains DataFrames for
+                        the main data, and the second contains DataFrames for base data.
+            output_file (str): The output file path where the modified Excel file will be saved.
+
+        Functionality:
+        - Each DataFrame is inserted into a specific sheet of an existing Excel workbook.
+        - Special handling is provided for certain sheets, applying different logic based
+          on column positions or sheet names.
+        - If data exceeds a specified limit, rows beyond that limit are highlighted in red.
+        - Data is inserted into corresponding sheets with special handling for column positions
+          depending on the sheet name.
+
+        Workflow:
+        - A workbook is loaded, and the DataFrames are inserted one by one into the appropriate
+          sheets using the `insert_dataframe_to_excel` function.
+        - The workbook is then saved as the output file.
+
+        Notes:
+        - This function assumes the workbook `DEnew.xlsx` exists in the specified location
+          (i.e., '/opt/airflow/pipe/DEnew.xlsx').
+        - It supports complex sheet-specific logic, including color highlighting for cells when
+          a row exceeds the given limit.
+
+    """
+
     dataframes = dfs[0]
     dataframes_base = dfs[1]
 
-    # # Использовать при сборке финального приложения
-    # file_path = getattr(sys, '_MEIPASS', '../../Downloads') + '/DEnew.xlsx'
-    # wb = load_workbook(file_path)
-
-    # Использовать при запуске кода
     wb = load_workbook('/opt/airflow/pipe/DEnew.xlsx')
 
     def insert_dataframe_to_excel(df, sheet_name, start, limit):
+        """
+            Inserts data from a DataFrame into an Excel worksheet and applies specific formatting
+            depending on the sheet name.
+
+            Args:
+                df (DataFrame): The DataFrame containing the data to be inserted.
+                sheet_name (str): The name of the worksheet where the data will be inserted.
+                start (int): The row number in the sheet to start inserting data.
+                limit (int): The maximum number of rows to insert before applying a red fill
+                to excess rows.
+
+            Functionality:
+                - Handles special column positioning for certain sheets.
+                - Inserts data up to the specified `limit`, beyond which rows are highlighted with
+                a red fill (`PatternFill`).
+        """
 
         def is_last_column(df, column_name):
+            """Checks if the given column is the last column of the DataFrame."""
             return column_name == df.columns[-1]
 
         def is_last2_column(df, column_name):
+            """Checks if the given column is the second-to-last column of the DataFrame."""
             return column_name == df.columns[-2]
 
         def is_last3_column(df, column_name):
+            """Checks if the given column is the third-to-last column of the DataFrame."""
             return column_name == df.columns[-3]
 
         def is_last4_column(df, column_name):
+            """Checks if the given column is the fourth-to-last column of the DataFrame."""
             return column_name == df.columns[-4]
 
         ws = wb[sheet_name]
 
-        # Вставляем значения из датафрейма в листы
+        # Insert values into the worksheet, with different logic for specific sheets
         if sheet_name == "3.CAE":
             for column in df:
                 for index, v in enumerate(df[column], start=start):
@@ -45,10 +90,12 @@ def insert_excel_data(dfs, output_file):
                             for cell in col:
                                 cell.fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
                         break
+        # Handling for sheet "15.MDM"
         elif sheet_name == "15.MDM":
             for column in df:
                 for index, v in enumerate(df[column], start=start):
                     if index <= limit + 2:
+                        # Different logic for the last four columns
                         if is_last_column(df, column):
                             col_number = df.columns.get_loc(column)
                             ws.cell(row=index + 1, column=col_number + 4, value=v)
@@ -70,6 +117,7 @@ def insert_excel_data(dfs, output_file):
                             for cell in col:
                                 cell.fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
                         break
+        # Handling for sheet "21.СКТ"
         elif sheet_name == "21.СКТ":
             for column in df:
                 for index, v in enumerate(df[column], start=start):
@@ -90,6 +138,7 @@ def insert_excel_data(dfs, output_file):
                                 cell.fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
                         break
         else:
+            # Default behavior for all other sheets
             for column in df:
                 for index, v in enumerate(df[column], start=start):
                     if index <= limit + 2:
@@ -103,6 +152,9 @@ def insert_excel_data(dfs, output_file):
                         break
 
         print(f'{sheet_name} - Data inserted successfully')
+
+    # Calls to insert data into specific sheets
+    # 1.CAD, 2.ECAD, 3.CAE, etc.
 
     # 1.CAD
     insert_dataframe_to_excel(dataframes[0], '1.CAD', 3, 2111)
