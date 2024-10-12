@@ -4,6 +4,10 @@
 <div align="center">
   <img alt="Demo" src="./assets/Demo.png" />
 </div>
+<br/>
+<div align="center">
+  <img alt="Demo" src="./assets/XLSXAssembler.png" />
+</div>
 
 <br/>
 
@@ -61,15 +65,15 @@ Prerequisites:
 
 2. Navigate into the `src` directory `cd src/`
 
-4. Run the ETL client:
+4. (Terminal 1) Run the ETL client:
 `python app.py`
 
-5. Build the Docker image:
+5. (Terminal 2) Build the Docker image (`sudo` may require):
 `docker build . --tag extending_airflow:latest`
 
-6. Run `docker-compose up -d` command to start docker services.
+6. (Terminal 2) Run `docker-compose up -d` command to start docker services.
    
-8. (Optional) Run `docker-compose down -v` command to end docker services
+8. (Terminal 2) (Optional) Run `docker-compose down -v` command to end docker services.
 
 The PyQt5 GUI will launch, where you can select multiple Excel files and begin the ETL process.
 *Runs the app in the development mode.*
@@ -82,15 +86,18 @@ The PyQt5 GUI will launch, where you can select multiple Excel files and begin t
    
 3. Click `Merge Files` to name the output file and choose it's destination. The ETL process will start afterwards.
    
-4. To view the Airflow Dag process, open `http://localhost:8080/home` with login: `airflow` and password: `airflow`.
+4. To view the Airflow Dag process:
+- Open `http://localhost:8080/home` in your browser.
+- Enter Login: `airflow` and Password: `airflow`.
+- (Info) If you just ran the `docker-compose up -d` it may take some time for airflow to load.
    
-5. To view the Radis database:
-- Open `http://localhost:8001/`
+6. To view the Radis database:
+- Open `http://localhost:8001/` in your browser.
 - Accept "EULA and Privacy Settings"
 - Click `I already have a database`
 - Click `Connect to a Radis Database` with Host: `redis`, Port: `6379`, Name: `redis-local`
 - Click `ADD REDIS DATABASE`
-- Select the `redis-local` database
+- Select the `redis-local` database.
  
 ### Show your support
 
