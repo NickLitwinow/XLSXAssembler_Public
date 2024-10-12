@@ -2,6 +2,22 @@ import pandas as pd
 import os
 
 def read_data(file_paths, output_file):
+    """
+    Module: load_data.py
+
+    This module contains functions for loading and processing data from multiple sources
+    (likely Excel sheets) into pandas DataFrames. It handles multiple categories of software,
+    segmenting data based on the sheet name.
+
+    Main functions and responsibilities:
+    -----------------------------------
+    - Load data from multiple Excel sheets.
+    - Identify data sections based on the sheet name (e.g., "Отечественное ПО", "Зарубежное ПО" etc).
+    - Concatenate and store relevant data for each software type.
+    - Clean the data, removing empty rows or invalid rows.
+    - Return the final cleaned DataFrames for further processing.
+    """
+
     print('FILE PATHS', file_paths)
     print('OUTPUT FILE', output_file)
     with pd.ExcelWriter(output_file, mode='w') as writer:

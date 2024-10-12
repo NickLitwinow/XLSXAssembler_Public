@@ -2,6 +2,21 @@ import pandas as pd
 import re
 
 def assemble_data(all_sheets_data):
+    """
+    Module: transform_data.py
+
+    This module handles the transformation of loaded DataFrames, focusing on cleaning and
+    formatting the data for further analysis. This includes removing empty rows, handling
+    specific column conditions, and ensuring that all DataFrames are properly formatted.
+
+    Main functions and responsibilities:
+    -----------------------------------
+    - Apply transformations to a list of DataFrames.
+    - Remove rows with empty cells or irrelevant data.
+    - Ensure that the data meets the required structure before analysis.
+    - Return the cleaned and structured DataFrames.
+    """
+
     cad_df1 = pd.DataFrame()
     cad_df2 = pd.DataFrame()
     ecad_df1 = pd.DataFrame()
@@ -55,11 +70,12 @@ def assemble_data(all_sheets_data):
     bim = pd.DataFrame()
     ib = pd.DataFrame()
 
+    # Regex patterns for end indexes
     pattern = r"\s*ИТОГ[ОA0]\s*\(\s*считается\s+[аa@]втоматически,\s+не\s+заполнять\s*\)\s*"
     pattern_ext = r"\s*Итог[оO0]\s*\(\s*заполняется\s+автоматически,\s+не\s+вводить\s+данные\s+вручную\s*\)\s*"
     pattern_amount = r"\s*Количество\s+уникальных\s+наименований\s+отечественного\s+ПО\s*\(\s*считается\s+автоматически,\s+не\s+заполнять\s*\)\s*"
 
-    # Вывод информации о загруженных датафреймах
+    # Dataframe assembly
     for key, dataframe in all_sheets_data.items():
         if key.endswith("1.CAD"):
             print(f"DataFrame '{key}':")
@@ -70,13 +86,13 @@ def assemble_data(all_sheets_data):
 
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             cad_df1 = pd.concat([cad_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             cad_df2 = pd.concat([cad_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("2.ECAD"):
@@ -88,13 +104,13 @@ def assemble_data(all_sheets_data):
 
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             ecad_df1 = pd.concat([ecad_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             ecad_df2 = pd.concat([ecad_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("3.CAE"):
@@ -105,7 +121,7 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             cae_df1 = pd.concat([cae_df1,
                                  pd.concat(
                                      [df.loc[2:end_index - 1].iloc[:, :9], df.loc[2:end_index - 1].iloc[:, 11]],
@@ -114,7 +130,7 @@ def assemble_data(all_sheets_data):
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             cae_df2 = pd.concat([cae_df2, pd.concat(
                 [df.loc[start_index:end_index - 1].iloc[:, :9], df.loc[start_index:end_index - 1].iloc[:, 11]],
                 axis=1)], ignore_index=True)
@@ -127,13 +143,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             capp_df1 = pd.concat([capp_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             capp_df2 = pd.concat([capp_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("5.CAM"):
@@ -144,13 +160,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'Не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             cam_df1 = pd.concat([cam_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             cam_df2 = pd.concat([cam_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("6.PDM"):
@@ -161,13 +177,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             pdm_df1 = pd.concat([pdm_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             pdm_df2 = pd.concat([pdm_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("7.ERP"):
@@ -178,13 +194,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             erp_df1 = pd.concat([erp_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             erp_df2 = pd.concat([erp_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("8.СУБУ"):
@@ -195,13 +211,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             subu_df1 = pd.concat([subu_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             subu_df2 = pd.concat([subu_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("9.СБ"):
@@ -212,13 +228,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             sb_df1 = pd.concat([sb_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             sb_df2 = pd.concat([sb_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("10.СУПР"):
@@ -229,7 +245,7 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             supr_df1 = pd.concat([supr_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
@@ -241,7 +257,7 @@ def assemble_data(all_sheets_data):
                     lambda row: row.astype(str).str.contains(pattern_amount, flags=re.IGNORECASE, regex=True).any(),
                     axis=1)].index
                 end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                    f'не найден индекс итого для {key}')  # Второе появление
+                    f'Index is not found for key: {key}')  
             supr_df2 = pd.concat([supr_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("11.СУП"):
@@ -252,13 +268,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             sup_df1 = pd.concat([sup_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             sup_df2 = pd.concat([sup_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("12.MRPII"):
@@ -269,13 +285,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             mrp2_df1 = pd.concat([mrp2_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             mrp2_df2 = pd.concat([mrp2_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("13.ILS"):
@@ -286,13 +302,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             ils_df1 = pd.concat([ils_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             ils_df2 = pd.concat([ils_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("14.ПО для ИЭТР"):
@@ -303,13 +319,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             iatr_df1 = pd.concat([iatr_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             iatr_df2 = pd.concat([iatr_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("15.MDM"):
@@ -320,7 +336,7 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             mdm_df1 = pd.concat([mdm_df1, pd.concat(
                 [df.loc[2:end_index - 1].iloc[:, :11], df.loc[2:end_index - 1].iloc[:, 14:18]], axis=1)],
                                 ignore_index=True)
@@ -328,7 +344,7 @@ def assemble_data(all_sheets_data):
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             mdm_df2 = pd.concat([mdm_df2, pd.concat(
                 [df.loc[start_index:end_index - 1].iloc[:, :11], df.loc[start_index:end_index - 1].iloc[:, 14:18]],
                 axis=1)], ignore_index=True)
@@ -341,13 +357,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             sad_df1 = pd.concat([sad_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             sad_df2 = pd.concat([sad_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("17.EAM"):
@@ -358,13 +374,13 @@ def assemble_data(all_sheets_data):
                          axis=1)].index
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             eam_df1 = pd.concat([eam_df1, df.loc[2:end_index - 1].iloc[:, :9]], ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             eam_df2 = pd.concat([eam_df2, df.loc[start_index:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("18.Регламенты"):
@@ -374,7 +390,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             reglamenty = pd.concat([reglamenty, df.loc[1:end_index - 1]], ignore_index=True)
 
         elif key.endswith("19.Коммуникации"):
@@ -392,7 +408,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             cody = pd.concat([cody, df.loc[1:end_index - 1].iloc[:, :15]], ignore_index=True)
 
         elif key.endswith("21.СКТ"):
@@ -402,7 +418,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             skt = pd.concat(
                 [skt,
                  pd.concat([df.loc[1:end_index - 1].iloc[:, :7], df.loc[1:end_index - 1].iloc[:, 8:10]], axis=1)],
@@ -417,14 +433,14 @@ def assemble_data(all_sheets_data):
 
             # Отечественное ПО
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             obshesistemnoe_po_df1 = pd.concat([obshesistemnoe_po_df1, df.loc[2:end_index - 1].iloc[:, :8]],
                                               ignore_index=True)
 
             # Зарубежное ПО
             start_index = df[df.iloc[:, 0] == 'Зарубежное ПО'].index[0] + 1
             end_index = end_indexes[1] if len(end_indexes) > 1 else print(
-                f'не найден индекс итого для {key}')  # Второе появление
+                f'Index is not found for key: {key}')  
             obshesistemnoe_po_df2 = pd.concat(
                 [obshesistemnoe_po_df2, df.loc[start_index:end_index - 1].iloc[:, :8]],
                 ignore_index=True)
@@ -444,7 +460,7 @@ def assemble_data(all_sheets_data):
                     lambda row: row.astype(str).str.contains(pattern_ext, flags=re.IGNORECASE, regex=True).any(),
                     axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             sistemy_monitoringa = pd.concat([sistemy_monitoringa, df.loc[2:end_index - 1].iloc[:, :51]],
                                             ignore_index=True)
 
@@ -455,7 +471,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             standarty = pd.concat([standarty, df.loc[1:end_index - 1].iloc[:, :5]], ignore_index=True)
 
         elif key.endswith("26.BI-системы"):
@@ -471,7 +487,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             ORD = pd.concat([ORD, df.loc[1:end_index - 1].iloc[:, :7]], ignore_index=True)
 
         elif key.endswith("28.КД"):
@@ -481,7 +497,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             kd = pd.concat([kd, df.loc[1:end_index - 1].iloc[:, :10]], ignore_index=True)
 
         elif key.endswith("29.МЗК"):
@@ -491,7 +507,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             mzk = pd.concat([mzk, df.loc[1:end_index - 1].iloc[:, :9]], ignore_index=True)
 
         elif key.endswith("30.Кадры 1"):
@@ -501,7 +517,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             kadry_1 = pd.concat([kadry_1, df.loc[1:end_index - 1].iloc[:, :18]], ignore_index=True)
 
         elif key.endswith("31.Кадры 2"):
@@ -511,7 +527,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             kadry_2 = pd.concat([kadry_2, df.loc[1:end_index - 1].iloc[:, :4]], ignore_index=True)
 
         elif key.endswith("32.BIM"):
@@ -521,7 +537,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             bim = pd.concat([bim, df.loc[1:end_index - 1].iloc[:, :11]], ignore_index=True)
 
         elif key.endswith("33.ИБ"):
@@ -531,7 +547,7 @@ def assemble_data(all_sheets_data):
                 df.apply(lambda row: row.astype(str).str.contains(pattern, flags=re.IGNORECASE, regex=True).any(),
                          axis=1)].index
             end_index = end_indexes[0] if len(end_indexes) > 0 else print(
-                f'не найден индекс итого для {key}')  # Первое появление
+                f'Index is not found for key: {key}')   
             ib = pd.concat([ib, df.loc[1:end_index - 1].iloc[:, :26]], ignore_index=True)
 
         else:
@@ -556,22 +572,16 @@ def assemble_data(all_sheets_data):
                   eam_df1, eam_df2,
                   obshesistemnoe_po_df1, obshesistemnoe_po_df2]
 
-    # Перебор каждого датафрейма в списке
     for df in dataframes:
-        # Условие, которое проверяет, пустые ли первые четыре столбца
         mask = df.iloc[:, 0:4].isnull().all(axis=1)
-        # Удаление строк, где условие истинно
         df.drop(index=df[mask].index, inplace=True)
-        # Дополнительно: удаление строк, где все значения пусты
         df.dropna(how='all', inplace=True)
 
     dataframes_base = [reglamenty, kommunikazii, cody, skt, intergracia_oborudovaniya, sistemy_monitoringa, standarty, bi_sistemy,
                        ORD, kd, mzk, kadry_1, kadry_2, bim, ib]
 
     for df in dataframes_base:
-        # Удаление строк, где первый столбец пуст
         df.dropna(subset=[df.columns[0]], inplace=True)
-        # Дополнительно: удаление строк, где все значения пусты
         df.dropna(how='all', inplace=True)
 
     dfs = [dataframes, dataframes_base]

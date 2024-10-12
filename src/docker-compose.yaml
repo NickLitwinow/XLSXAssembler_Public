@@ -76,7 +76,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - /Users:/Users
-    - ./excel_pipe:/opt/airflow/pipe
+    - ./assets:/opt/airflow/pipe
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -230,7 +230,7 @@ services:
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
     volumes:
-      - ./excel_pipe:/opt/airflow/pipe
+      - ./assets:/opt/airflow/pipe
       - ${AIRFLOW_PROJ_DIR:-.}:/sources
 
   airflow-cli:
