@@ -4,7 +4,9 @@
 <div align="center">
   <img alt="Demo" src="./assets/Demo.png" />
 </div>
-<br/>
+
+## Architecture
+
 <div align="center">
   <img alt="Demo" src="./assets/XLSXAssembler.png" />
 </div>
