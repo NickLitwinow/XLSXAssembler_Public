@@ -8,7 +8,7 @@
 ## Architecture
 
 <div align="center">
-  ![XLSXAssemblerr](https://github.com/user-attachments/assets/61589d81-a2f8-44ba-9911-1dc90a7ce1bd)
+  <img alt="Demo (2)" src="https://github.com/user-attachments/assets/61589d81-a2f8-44ba-9911-1dc90a7ce1bd" />
 </div>
 
 <br/>
