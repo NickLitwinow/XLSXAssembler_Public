@@ -1,6 +1,9 @@
 <h2 align="center">
   XLSX Assembler – ETL Tool for Merging Excel Data
 </h2>
+
+![Github_Showcase](https://github.com/user-attachments/assets/aa675870-435d-40be-8d81-5cecf87a5eb4)
+
 <div align="center">
   <img width="856" alt="Demo (1)" src="https://github.com/user-attachments/assets/e984f61c-70d7-4da2-bace-758deddc5319" />
 </div>
